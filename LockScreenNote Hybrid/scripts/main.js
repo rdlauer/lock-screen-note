@@ -31,6 +31,11 @@
                 sql.updateNote($("#noteId").val(), $("#noteTitle").val(), $("#noteText").val(), activeYN.check());
             }
             
+            if (activeYN.check()) {
+                // start here
+                notify.addNotification(1, $("#noteTitle").val(), $("#noteText").val());
+            }
+            
             app.application.navigate("#home");
             app.resetForm();
         },
@@ -54,8 +59,8 @@
     
     app.resetForm = function() {
         $("#noteId").val("");
-        $("#noteTitle").val("");
-        $("#noteText").val("");
+        $("#noteTitle").val("").removeClass("required");
+        $("#noteText").val("").removeClass("required");
         var activeYN = $("#noteActive").data("kendoMobileSwitch");
         activeYN.check(false);
     }
@@ -74,6 +79,27 @@
 		navigator.splashscreen.hide();
         StatusBar.overlaysWebView(false);
 		app.main.start();
+        
+        if (window.plugin.notification) {
+
+            // set some global defaults for all local notifications
+            window.plugin.notification.local.setDefaults({
+                autoCancel : true // removes the notification from notification centre when clicked
+            });
+    
+            // triggered when a notification was clicked outside the app (background)
+            window.plugin.notification.local.onclick = function (id, state, json) {
+                var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
+            };
+
+            // triggered when a notification is executed while using the app (foreground)
+            // on Android this may be triggered even when the app started by clicking a notification
+            window.plugin.notification.local.ontrigger = function (id, state, json) {
+                var message = 'ID: ' + id + (json == '' ? '' : '\nData: ' + json);
+                navigator.notification.alert(message, null, 'Notification received while the app was in the foreground', 'Close');
+            };
+    
+        };
 	}
 
 	document.addEventListener("deviceready", onDeviceReady, false);

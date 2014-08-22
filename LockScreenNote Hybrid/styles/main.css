@@ -1,3 +1,22 @@
+@font-face
+{
+    font-family: "Open Sans";
+    src: url('../styles/fonts/OpenSans-Regular.ttf') format('truetype');
+}
+
+body, html
+{
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    font-family: "Open Sans", "HelveticaNeue Light","Roboto Light","Slate Light","Segoe WP",NokiaPureTextLight,sans-serif !important;
+}
+
+input
+{
+    font-family: "Open Sans" !important;
+}
+
 .content {
     padding: 10px;
 }

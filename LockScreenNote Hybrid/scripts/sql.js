@@ -38,7 +38,7 @@
         sql.db.transaction(function(tx) {
             tx.executeSql("UPDATE Note SET note_title = ?, note_text = ?, active_yn = ? WHERE id = ?",
                           [title, text, active, id],
-                          console.log("record updated"),
+                          sql.onSuccess,
                           sql.onError);
         });
     }
