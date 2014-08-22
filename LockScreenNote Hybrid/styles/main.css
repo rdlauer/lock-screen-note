@@ -1,0 +1,19 @@
+.content {
+    padding: 10px;
+}
+
+.required {
+    background-color: #D63333;
+    color: white;
+}
+
+.deleteButton {
+    display:none;
+    position: absolute;
+    top: 0em;
+    height: 100%;
+    right: .5em;
+    width: 60px;
+    background-color: #bd2729 !important;
+    color: #fff !important;
+}
