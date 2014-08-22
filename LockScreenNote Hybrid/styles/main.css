@@ -17,3 +17,7 @@
     background-color: #bd2729 !important;
     color: #fff !important;
 }
+
+a:link {
+    text-decoration: none;
+}

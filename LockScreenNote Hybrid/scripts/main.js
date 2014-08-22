@@ -28,22 +28,37 @@
                 sql.insertNote($("#noteTitle").val(), $("#noteText").val(), activeYN.check());
             } else {
                 // update
-                sql.updateNote($("#noteTitle").val(), $("#noteText").val(), activeYN.check(), $("#noteId").val());
+                sql.updateNote($("#noteId").val(), $("#noteTitle").val(), $("#noteText").val(), activeYN.check());
             }
             
             app.application.navigate("#home");
-            
+            app.resetForm();
         },
         
         loadNote: function(e) {
-        	//console.log(e);
-    	}
+            if (e.view.params.id) {
+                sql.selectNote(e.view.params.id);
+            }
+    	},
+        
+        cancelNote: function() {
+            app.application.navigate("#home");
+            app.resetForm();
+        }
         
     });
     
     app.editNoteModel = {
         viewModel: new EditNoteModel()
     };
+    
+    app.resetForm = function() {
+        $("#noteId").val("");
+        $("#noteTitle").val("");
+        $("#noteText").val("");
+        var activeYN = $("#noteActive").data("kendoMobileSwitch");
+        activeYN.check(false);
+    }
     
     function validate(id) {
         var x = "#" + id;

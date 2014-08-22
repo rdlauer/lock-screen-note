@@ -23,8 +23,8 @@
     
     <!-- note template -->
     <script type="text/x-kendo-template" id="note-template">
-        <a href="">${note_title}</a>
-        <a href="" data-role="button" class="deleteButton">Delete</a>
+        <a href="\#add?id=${id}">${note_title}</a>
+        <a href="" data-role="button" class="deleteButton" onclick="sql.deleteNote(${id})">Delete</a>
     </script>
     
     
@@ -50,7 +50,7 @@
             
             <br /><br />
             
-            <a data-role="button" data-bind="click: saveNote">Save Note</a> <a data-role="button" href="#home" data-transition="slide:right">Cancel</a>
+            <a data-role="button" data-bind="click: saveNote">Save Note</a> <a data-role="button" data-bind="click: cancelNote" data-transition="slide:right">Cancel</a>
             
         </div>
     </div>

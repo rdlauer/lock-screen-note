@@ -38,7 +38,7 @@
         sql.db.transaction(function(tx) {
             tx.executeSql("UPDATE Note SET note_title = ?, note_text = ?, active_yn = ? WHERE id = ?",
                           [title, text, active, id],
-                          sql.onSuccess,
+                          console.log("record updated"),
                           sql.onError);
         });
     }
@@ -47,8 +47,24 @@
         sql.db.transaction(function(tx) {
             tx.executeSql("DELETE FROM Note WHERE id = ?",
                           [id],
-                          sql.onSuccess,
+                          sql.loadAllNotes,
                           sql.onError);
+        });
+    }
+    
+    sql.selectNote = function(id) {
+        var render = function (tx, rs) {
+            $("#noteId").val(id);
+            $("#noteTitle").val(rs.rows.item(0).note_title);
+            $("#noteText").val(rs.rows.item(0).note_text);
+            var activeYN = $("#noteActive").data("kendoMobileSwitch");
+            activeYN.check(rs.rows.item(0).active_yn);
+        }
+        
+        sql.db.transaction(function(tx) {
+            tx.executeSql("SELECT * FROM Note WHERE id = ?", [id], 
+                      render, 
+                      sql.onError);
         });
     }
     
@@ -68,18 +84,24 @@
                 //console.log(rowOutput);
 
                 var template = kendo.template($("#note-template").html());
-        
-                $("#note-list").kendoMobileListView({
-                    dataSource: kendo.data.DataSource.create($.parseJSON(rowOutput)),
-                    template: template
-                })
-                .kendoTouch({
-                    filter: ">li",
-                    enableSwipe: true,
-                    touchstart: touchstart,
-                    tap: navigate,
-                    swipe: swipe
-                });
+        		
+                if (rowOutput.length == 0) {
+                    $("#note-list").kendoMobileListView({
+                        dataSource: new kendo.data.DataSource()
+                    })
+				} else {
+                    $("#note-list").kendoMobileListView({
+                        dataSource: kendo.data.DataSource.create($.parseJSON(rowOutput)),
+                        template: template
+                    })
+                    .kendoTouch({
+                        filter: ">li",
+                        enableSwipe: true,
+    					touchstart: touchstart,
+                        //tap: navigate,
+                        swipe: swipe
+                    });   
+                }
             }
             
             sql.db.transaction(function(tx) {
@@ -106,11 +128,11 @@
         console.log("SQLite Error: " + e.message);
     }
     
-    function navigate(e) {
-        var itemUID = $(e.touch.currentTarget).data("uid");
-        console.log(itemUID);
+    //function navigate(e) {
+        //var itemUID = $(e.touch.currentTarget).data("uid");
+        //console.log(e);
         //kendo.mobile.application.navigate("#edit-detailview?uid=" + itemUID);
-    }
+    //}
 
     function swipe(e) {
         var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
