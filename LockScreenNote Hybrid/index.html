@@ -19,8 +19,22 @@
 <body>
     
     <!-- home -->
-    <div data-role="view" id="home" data-layout="main-layout" data-title="LockScreenNote" data-show="sql.loadAllNotes">
+    <div data-role="view" id="home" data-layout="main-layout" data-title="Lock Screen Note" data-show="sql.loadAllNotes">
 		<ul id="note-list"></ul>
+    </div>
+    
+    <!-- first run modal view -->
+    <div data-role="modalview" id="modalview-first-use" style="width:90%;height:40%;display:none">
+        <div data-role="header">
+            <div data-role="navbar">
+                <span>Welcome!</span>
+                <a data-click="app.closeModalViewLogin" data-role="button" data-align="right">Close</a>
+            </div>
+        </div>
+		<p>
+            Use Lock Screen Note to add simple reminders that show up in your device's lock screen. 
+            Add a note using the plus (+) icon, put your device to sleep, and the note will show up!
+        </p>
     </div>
     
     <!-- note template -->
@@ -38,21 +52,37 @@
             <input type="hidden" id="noteId" />
         	
             Note Title:<br />
-            <input type="text" size="40" id="noteTitle" />
+            <input type="text" style="width:90%" id="noteTitle" />
             
             <br /><br />
             
             Note Text:<br />
-            <textarea rows="6" cols="40" id="noteText"></textarea>
+            <textarea rows="5" style="width:90%" id="noteText"></textarea>
             
             <br /><br />
             
-            Note Status:<br />
-            <input type="checkbox" data-role="switch" data-checked="false" id="noteActive" />
+            Note Enabled:<br />
+            <input type="checkbox" data-role="switch" data-checked="false" id="noteActive" data-change="app.editNoteModel.viewModel.showActive" />
             
-            <br /><br />
+            <div id="noteDelayPanel" style="display:none">
             
-            <a data-role="button" data-bind="click: saveNote">Save Note</a> <a data-role="button" data-bind="click: cancelNote" data-transition="slide:right">Cancel</a>
+                <br />
+                
+                Delay Until Active:<br />
+                <select id="noteDelay">
+                    <option value="10">10 seconds</option>
+                    <option value="30">30 seconds</option>
+                    <option value="60">1 minute</option>
+                    <option value="300">5 minutes</option>
+                </select>
+                
+            </div>
+            
+            <div id="noteDelayPanelHidden">
+            	<br /><br />
+            </div>
+            
+            <a data-role="button" data-bind="click: saveNote">Save Note</a> <a data-role="button" data-bind="click: cancelNote" data-transition="slide:left">Cancel</a>
             
         </div>
     </div>
@@ -62,7 +92,7 @@
         <header data-role="header">
             <div data-role="navbar">
                 <a data-role="button" href="#add" data-icon="add" data-align="right"></a>
-                <a data-role="button" data-click="sql.deleteDb" data-icon="stop" data-align="left"></a>
+                <a data-role="button" data-click="sql.deleteDb" data-icon="stop" data-align="left" style="display:none"></a>
                 <span data-role="view-title"></span>
             </div>
         </header>

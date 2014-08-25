@@ -3,7 +3,7 @@
   "ProjectGuid": "184cd38e-0809-487a-844f-5a117f4681ec",
   "projectVersion": 1,
   "AppIdentifier": "com.telerik.LockScreenNoteHybrid",
-  "DisplayName": "LockScreenNote",
+  "DisplayName": "LockNote",
   "Author": "Rob Lauer",
   "Description": "LockScreenNote",
   "BundleVersion": "1.0",
@@ -35,13 +35,10 @@
     "android.permission.ACCESS_NETWORK_STATE",
     "android.permission.BROADCAST_STICKY",
     "android.permission.INTERNET",
-    "android.permission.READ_PHONE_STATE",
-    "android.permission.RECEIVE_SMS",
-    "android.permission.WRITE_EXTERNAL_STORAGE"
+    "android.permission.READ_PHONE_STATE"
   ],
   "DeviceOrientations": [
-    "Portrait",
-    "Landscape"
+    "Portrait"
   ],
   "AndroidHardwareAcceleration": "true",
   "iOSStatusBarStyle": "Default",

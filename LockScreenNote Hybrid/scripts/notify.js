@@ -2,20 +2,20 @@
     
 	var notify = global.notify = global.notify || {};
     
-    notify.addNotification = function (id, title, text) {
+    notify.addNotification = function (id, title, text, seconds) {
 
         window.plugin.notification.local.add({
                  id : id,
               title : title,
             message : text,
               sound : null,
-               date : this.getNowPlus30Seconds()
+               date : this.getNowPlusXSeconds(seconds)
         }, function(){console.log('ok, scheduled')});
     }
     
    
-    notify.getNowPlus30Seconds = function () {
-        return new Date(new Date().getTime() + 30*1000);
+    notify.getNowPlusXSeconds = function (seconds) {
+        return new Date(new Date().getTime() + seconds * 1000);
     }
     
 }(window));

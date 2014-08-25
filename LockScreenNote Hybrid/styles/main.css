@@ -4,17 +4,24 @@
     src: url('../styles/fonts/OpenSans-Regular.ttf') format('truetype');
 }
 
+@font-face
+{
+    font-family: Futura;
+    src: url('../styles/fonts/Futura-Light.ttf') format('truetype');
+}
+
 body, html
 {
     margin: 0;
     height: 100%;
     width: 100%;
-    font-family: "Open Sans", "HelveticaNeue Light","Roboto Light","Slate Light","Segoe WP",NokiaPureTextLight,sans-serif !important;
+    /*font-family: "Open Sans", "HelveticaNeue Light","Roboto Light","Slate Light","Segoe WP",NokiaPureTextLight,sans-serif !important;*/
 }
 
-input
+input, textarea
 {
-    font-family: "Open Sans" !important;
+    font-family: "HelveticaNeue Light","Roboto Light","Slate Light","Segoe WP",NokiaPureTextLight,sans-serif !important;;
+    font-size: 1.1em !important;
 }
 
 .content {
@@ -30,7 +37,6 @@ input
     display:none;
     position: absolute;
     top: 0em;
-    height: 100%;
     right: .5em;
     width: 60px;
     background-color: #bd2729 !important;
@@ -39,4 +45,14 @@ input
 
 a:link {
     text-decoration: none;
+}
+
+.km-root .km-android .km-view {
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+}
+
+.km-android .km-view-title
+{
+    visibility: visible;
 }

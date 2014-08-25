@@ -21,23 +21,23 @@
     
     sql.createTable = function() {
         sql.db.transaction(function(tx) {
-            tx.executeSql("CREATE TABLE IF NOT EXISTS Note (id INTEGER PRIMARY KEY ASC, note_title TEXT, note_text TEXT, active_yn TEXT)");
+            tx.executeSql("CREATE TABLE IF NOT EXISTS Note (id INTEGER PRIMARY KEY ASC, note_title TEXT, note_text TEXT, active_yn TEXT, active_seconds INTEGER)");
         });
     }
     
-    sql.insertNote = function(title, text, active) {
+    sql.insertNote = function(title, text, active, seconds) {
         sql.db.transaction(function(tx) {
-            tx.executeSql("INSERT INTO Note (note_title, note_text, active_yn) VALUES (?,?,?)",
-                          [title, text, active],
+            tx.executeSql("INSERT INTO Note (note_title, note_text, active_yn, active_seconds) VALUES (?,?,?,?)",
+                          [title, text, active, seconds],
                           sql.onSuccess,
                           sql.onError);
         });
     }
     
-    sql.updateNote = function(id, title, text, active) {
+    sql.updateNote = function(id, title, text, active, seconds) {
         sql.db.transaction(function(tx) {
-            tx.executeSql("UPDATE Note SET note_title = ?, note_text = ?, active_yn = ? WHERE id = ?",
-                          [title, text, active, id],
+            tx.executeSql("UPDATE Note SET note_title = ?, note_text = ?, active_yn = ?, active_seconds = ? WHERE id = ?",
+                          [title, text, active, seconds, id],
                           sql.onSuccess,
                           sql.onError);
         });
@@ -59,6 +59,7 @@
             $("#noteText").val(rs.rows.item(0).note_text);
             var activeYN = $("#noteActive").data("kendoMobileSwitch");
             activeYN.check(rs.rows.item(0).active_yn);
+            $("#noteDelay").val(rs.rows.item(0).active_seconds);
         }
         
         sql.db.transaction(function(tx) {
