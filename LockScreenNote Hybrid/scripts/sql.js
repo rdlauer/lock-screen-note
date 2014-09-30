@@ -55,11 +55,12 @@
     sql.selectNote = function(id) {
         var render = function (tx, rs) {
             $("#noteId").val(id);
-            $("#noteTitle").val(rs.rows.item(0).note_title);
+            //$("#noteTitle").val(rs.rows.item(0).note_title);
             $("#noteText").val(rs.rows.item(0).note_text);
             var activeYN = $("#noteActive").data("kendoMobileSwitch");
             activeYN.check(rs.rows.item(0).active_yn);
             $("#noteDelay").val(rs.rows.item(0).active_seconds);
+            $(".deleteButtonHollow").show();
         }
         
         sql.db.transaction(function(tx) {
@@ -95,13 +96,13 @@
                         dataSource: kendo.data.DataSource.create($.parseJSON(rowOutput)),
                         template: template
                     })
-                    .kendoTouch({
+/*                    .kendoTouch({
                         filter: ">li",
                         enableSwipe: true,
     					touchstart: touchstart,
                         //tap: navigate,
                         swipe: swipe
-                    });   
+                    });  */ 
                 }
             }
             
@@ -135,7 +136,7 @@
         //kendo.mobile.application.navigate("#edit-detailview?uid=" + itemUID);
     //}
 
-    function swipe(e) {
+/*    function swipe(e) {
         var button = kendo.fx($(e.touch.currentTarget).find("[data-role=button]"));
         button.expand().duration(200).play();
     }
@@ -159,6 +160,6 @@
         } else {
             listview.items().find("[data-role=button]:visible").hide();
         }
-    }
+    }*/
 
 }(window));

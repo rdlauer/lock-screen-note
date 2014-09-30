@@ -22,6 +22,8 @@ input, textarea
 {
     font-family: "HelveticaNeue Light","Roboto Light","Slate Light","Segoe WP",NokiaPureTextLight,sans-serif !important;;
     font-size: 1.1em !important;
+    -webkit-appearance: none;
+    border: 0;
 }
 
 .content {
@@ -31,6 +33,13 @@ input, textarea
 .required {
     background-color: #D63333;
     color: white;
+}
+
+.deleteButtonHollow {
+    border-color: #D63333 !important;
+    color: #D63333 !important;
+    float: right;
+    display: none;
 }
 
 .deleteButton {
@@ -56,3 +65,94 @@ a:link {
 {
     visibility: visible;
 }
+
+    /* Container used for styling the custom select, the buttom class adds the bg gradient, corners, etc. */
+    .dropdown {
+      position: relative;
+      display:block;
+      margin-top:0.5em;
+      padding:0;
+    }
+
+    /* This is the native select, we're making everything the text invisible so we can see the button styles in the wrapper */
+    .dropdown select {
+      width:100%;
+      margin:0;
+      background:none;
+      border: 1px solid transparent;
+      outline: none;
+      /* Prefixed box-sizing rules necessary for older browsers */
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      /* Remove select styling */
+      appearance: none;
+      -webkit-appearance: none;
+      /* Magic font size number to prevent iOS text zoom */
+      font-size:16px;
+      /* General select styles: change as needed */
+      font-family: helvetica, sans-serif;
+      font-weight: bold;
+      color: #444;
+      padding: .6em 1.9em .5em .8em;
+      line-height:1.3;
+    }
+    
+    
+    /* Custom arrow sits on top of the select - could be an image, SVG, icon font, etc. or the arrow could just baked into the bg image on the select */
+        
+    .dropdown::after {
+      content: "";
+      position: absolute;
+      width: 9px;
+      height: 8px;
+      top: 50%;
+      right: 1em;
+      margin-top:-4px;
+      background-image: url(select-arrow.png);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      padding: 0;
+      z-index: 2;
+      /* These hacks make the select behind the arrow clickable in some browsers */
+      pointer-events:none;
+    }
+    
+     /* This hides native dropdown button arrow in IE 10/11+ so it will have the custom appearance, IE 9 and earlier get a native select */
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {  
+       .dropdown select::-ms-expand {
+        display: none;
+      }
+      /* Removes the odd blue bg color behind the text in IE 10/11 and sets the text to match the focus style text */
+      select:focus::-ms-value {
+        background: transparent;
+        color: #222;
+      }
+    }
+
+    /* Focus style */
+    select:focus {
+      outline:none;
+      box-shadow: 0 0 1px 3px rgba(180,222,250, 1);
+      background-color:transparent;
+      color: #222;
+      border:1px solid #aaa;
+    }
+
+    option {
+      font-weight:normal;
+    }
+    
+     /* These are just demo button-y styles, style as you like */
+    .button {
+      border: 1px solid #bbb;
+      border-radius: .3em;
+      box-shadow: 0 1px 0 1px rgba(0,0,0,.04);
+      background: #f3f3f3; /* Old browsers */
+      background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+      background: linear-gradient(to bottom, #ffffff 0%,#e5e5e5 100%); /* W3C */
+    }

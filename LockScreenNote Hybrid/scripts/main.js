@@ -16,7 +16,7 @@
         
         saveNote: function() {
             
-            if (validate("noteTitle") || validate("noteText")) {
+            if (validate("noteText")) {
                 return false;
             }
             
@@ -25,14 +25,14 @@
 
             if ($("#noteId").val().length == 0) {
                 // insert
-                sql.insertNote($("#noteTitle").val(), $("#noteText").val(), activeYN.check(), $("#noteDelay").val());
+                sql.insertNote("", $("#noteText").val(), activeYN.check(), $("#noteDelay").val());
             } else {
                 // update
-                sql.updateNote($("#noteId").val(), $("#noteTitle").val(), $("#noteText").val(), activeYN.check(), $("#noteDelay").val());
+                sql.updateNote($("#noteId").val(), "", $("#noteText").val(), activeYN.check(), $("#noteDelay").val());
             }
             
             if (activeYN.check() && window.plugin && window.plugin.notification) {
-                notify.addNotification(app.guid(), $("#noteTitle").val(), $("#noteText").val(), $("#noteDelay").val());
+                notify.addNotification(app.guid(), "", $("#noteText").val(), $("#noteDelay").val());
                 
                 if (window.plugins.toast) {
                     // show a toast notification
@@ -59,6 +59,15 @@
             app.resetForm();
         },
         
+        deleteNote: function() {
+            
+            // delete
+            sql.deleteNote($("#noteId").val());
+
+            app.application.navigate("#home");
+            app.resetForm();
+        },
+        
         showActive: function(e) {
             //console.log(e.checked);
             if (e.checked) {
@@ -76,11 +85,13 @@
     
     app.resetForm = function() {
         $("#noteId").val("");
-        $("#noteTitle").val("").removeClass("required");
+        //$("#noteTitle").val("").removeClass("required");
         $("#noteText").val("").removeClass("required");
         var activeYN = $("#noteActive").data("kendoMobileSwitch");
         activeYN.check(false);
         $("#noteDelay").val("10");
+        $("#noteDelayPanel").hide();
+        $(".deleteButtonHollow").hide();
     }
     
     function validate(id) {
@@ -110,6 +121,16 @@
         localStorage.setItem("note_firstrun", "y");
     }
     
+    app.navigate = function(href) {
+        if (window.plugins && window.plugins.nativepagetransitions) {
+            window.plugins.nativepagetransitions.flip({
+                "href" : href
+            });
+        } else {
+            app.application.navigate(href);
+        }
+    }
+    
 	function onDeviceReady() {
 		navigator.splashscreen.hide();
         StatusBar.overlaysWebView(false);
@@ -124,7 +145,7 @@
 
             // set some global defaults for all local notifications
             window.plugin.notification.local.setDefaults({
-                autoCancel : true // removes the notification from notification centre when clicked
+                autoCancel : false // removes the notification from notification centre when clicked
             });
     
             // triggered when a notification was clicked outside the app (background)

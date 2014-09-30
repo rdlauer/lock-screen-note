@@ -33,15 +33,15 @@
         </div>
 		<p>
             Use Lock Screen Note to add simple reminders that show up in your device's lock screen. 
-            Add a note using the plus (+) icon, put your device to sleep, and the note will show up!
+            Add a note using the plus (+) icon, then put your device to sleep, and the note will show up!
         </p>
     </div>
     
     <!-- note template -->
     <script type="text/x-kendo-template" id="note-template">
-        <a href="\#add?id=${id}">${note_title}</a>
-        <a href="" data-role="button" class="deleteButton" onclick="sql.deleteNote(${id})">Delete</a>
+        <a href="\#add?id=${id}">${note_text}</a>
     </script>
+    <!-- <a href="" data-role="button" class="deleteButton" onclick="sql.deleteNote(${id})">Delete</a> -->
     
     
     <!-- add/edit note -->
@@ -51,30 +51,26 @@
             
             <input type="hidden" id="noteId" />
         	
-            Note Title:<br />
-            <input type="text" style="width:90%" id="noteTitle" />
+            <textarea rows="5" style="width:95%" id="noteText" placeholder="What note would you like to add to your lock screen?"></textarea>
             
             <br /><br />
             
-            Note Text:<br />
-            <textarea rows="5" style="width:90%" id="noteText"></textarea>
-            
-            <br /><br />
-            
-            Note Enabled:<br />
+            Make note visible?<br />
             <input type="checkbox" data-role="switch" data-checked="false" id="noteActive" data-change="app.editNoteModel.viewModel.showActive" />
             
             <div id="noteDelayPanel" style="display:none">
             
                 <br />
                 
-                Delay Until Active:<br />
-                <select id="noteDelay">
-                    <option value="10">10 seconds</option>
-                    <option value="30">30 seconds</option>
-                    <option value="60">1 minute</option>
-                    <option value="300">5 minutes</option>
-                </select>
+                Delay until visible:<br />
+                <div class="button dropdown">
+                    <select id="noteDelay">
+                        <option value="10">10 seconds</option>
+                        <option value="30">30 seconds</option>
+                        <option value="60">1 minute</option>
+                        <option value="300">5 minutes</option>
+                    </select>
+                </div>
                 
             </div>
             
@@ -83,6 +79,7 @@
             </div>
             
             <a data-role="button" data-bind="click: saveNote">Save Note</a> <a data-role="button" data-bind="click: cancelNote" data-transition="slide:left">Cancel</a>
+            <a data-role="button" data-bind="click: deleteNote" data-transition="slide:left" class="deleteButtonHollow">Delete</a>
             
         </div>
     </div>
@@ -91,7 +88,7 @@
     <div data-role="layout" data-id="main-layout">
         <header data-role="header">
             <div data-role="navbar">
-                <a data-role="button" href="#add" data-icon="add" data-align="right"></a>
+                <a data-role="button" onclick="app.navigate('#add')" data-icon="add" data-align="right"></a>
                 <a data-role="button" data-click="sql.deleteDb" data-icon="stop" data-align="left" style="display:none"></a>
                 <span data-role="view-title"></span>
             </div>

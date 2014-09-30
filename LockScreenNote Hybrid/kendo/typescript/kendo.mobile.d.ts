@@ -307,9 +307,13 @@ declare module kendo {
         model: Object;
     }
 
+    class ViewContainer extends Observable {
+       view: View;
+    }
+
     class Layout extends View {
         showIn(selector: string, view: View): void;
-        regions: { [selector: string]: View; };
+        containers: { [selector: string]: ViewContainer; };
     }
 
     class History extends Observable {
@@ -479,6 +483,12 @@ declare module kendo.data {
         destroy(): void;
     }
 
+    class BindingTarget {
+        target: any;
+        options: any;
+        source: any;
+    }
+
     class EventBinding extends Binding {
         get (): void;
     }
@@ -541,9 +551,23 @@ declare module kendo.data {
         static define(options: DataSourceSchemaModelWithFieldsArray): typeof Model;
     }
 
+    interface SchedulerEventData {
+        description?: string;
+        end?: Date;
+        endTimezone?: string;
+        isAllDay?: boolean;
+        id?: any;
+        start?: Date;
+        startTimezone?: string;
+        recurrenceId?: any;
+        recurrenceRule?: string;
+        recurrenceException?: string;
+        title?: string;
+    }
+
     class SchedulerEvent extends Model {
-        constructor(data?: any);
-        init(data?: any): void;
+        constructor(data?: SchedulerEventData);
+        init(data?: SchedulerEventData): void;
 
         description: string;
         end: Date;
@@ -555,10 +579,21 @@ declare module kendo.data {
         recurrenceId: any;
         recurrenceRule: string;
         recurrenceException: string;
+        title: string;
         static idField: string;
         static fields: DataSourceSchemaModelFields;
         static define(options: DataSourceSchemaModelWithFieldsObject): typeof SchedulerEvent;
         static define(options: DataSourceSchemaModelWithFieldsArray): typeof SchedulerEvent;
+        clone(options: any, updateUid: boolean): SchedulerEvent;
+        duration(): number;
+        expand(start: Date, end: Date, zone: any): SchedulerEvent[];
+        update(eventInfo: SchedulerEventData): void;
+        isMultiDay(): boolean;
+        isException(): boolean;
+        isOccurrence(): boolean;
+        isRecurring(): boolean;
+        isRecurrenceHead(): boolean;
+        toOccurrence(options: any): SchedulerEvent;
     }
 
     class GanttTask extends Model {
@@ -867,6 +902,7 @@ declare module kendo.data {
     class ObservableArray extends Observable {
         constructor(array?: any[]);
         init(array?: any[]): void;
+        [index: number]: any;
         length: number;
         join(separator: string): string;
         parent(): ObservableObject;
@@ -904,7 +940,8 @@ declare module kendo.data {
         options: DataSourceOptions;
         add(model: Object): kendo.data.Model;
         add(model: kendo.data.Model): kendo.data.Model;
-        aggregate(val?: any): any;
+        aggregate(val: any): void;
+        aggregate(): any;
         aggregates(): any;
         at(index: number): kendo.data.ObservableObject;
         cancelChanges(model?: kendo.data.Model): void;
@@ -923,6 +960,10 @@ declare module kendo.data {
         indexOf(value: kendo.data.ObservableObject): number;
         insert(index: number, model: kendo.data.Model): kendo.data.Model;
         insert(index: number, model: Object): kendo.data.Model;
+        online(value: boolean): void;
+        online(): boolean;
+        offlineData(data: any[]): void;
+        offlineData(): any[];
         page(): number;
         page(page: number): void;
         pageSize(): number;
@@ -1050,6 +1091,7 @@ declare module kendo.data {
     interface DataSourceTransportReadOptionsData {
         sort?: DataSourceSortItem[];
         filter?: DataSourceFilters;
+        group?: DataSourceGroupItem[];
         take?: number;
         skip?: number;
     }
@@ -1073,6 +1115,7 @@ declare module kendo.data {
         data?: any;
         filter?: any;
         group?: DataSourceGroupItem[];
+        offlineStorage?: any;
         page?: number;
         pageSize?: number;
         schema?: DataSourceSchema;
@@ -1152,6 +1195,8 @@ declare module kendo.ui {
         element: JQuery;
         setOptions(options: Object): void;
         resize(force?: boolean): void;
+        options: Object;
+        events: string[];
     }
 
     function plugin(widget: typeof kendo.ui.Widget, register?: typeof kendo.ui, prefix?: String): void;
@@ -1274,6 +1319,8 @@ declare module kendo.mobile {
         scroller(): kendo.mobile.ui.Scroller;
         showLoading(): void;
         view(): kendo.mobile.ui.View;
+        router: kendo.Router;
+        pane: kendo.mobile.ui.Pane;
     }
 
     interface ApplicationOptions {
@@ -1952,7 +1999,7 @@ on all platforms.
         */
         placeholder?: string;
         /**
-        Indicates whether filtering should be performed on every key up event or when the user press the Search button of the device keyboard.
+        Indicates whether filtering should be performed on every key up event or when the focus is moved out of the filter input.
         @member {boolean}
         */
         autoFilter?: boolean;
@@ -2728,7 +2775,7 @@ Note: The dataItem must be from a non-primitive type (Object).
         */
         elastic?: boolean;
         /**
-        The threshold below which a releasing the scroller will trigger the pull event.
+        The threshold below which releasing the scroller will trigger the pull event.
 Has effect only when the pullToRefresh option is set to true.
         @member {number}
         */
@@ -3523,89 +3570,10 @@ Notice: After the last finger is moved, the dragend event is fired.
     }
 
 
-    class Validator extends kendo.ui.Widget {
-        static fn: Validator;
-        static extend(proto: Object): Validator;
-
-        element: JQuery;
-        wrapper: JQuery;
-        constructor(element: Element, options?: ValidatorOptions);
-        options: ValidatorOptions;
-        /**
-        Get the error messages if any.
-        @method
-        @returns Messages for the failed validation rules.
-        */
-        errors(): any;
-        /**
-        Hides the validation messages.
-        @method
-        */
-        hideMessages(): void;
-        /**
-        Validates the input element(s) against the declared validation rules.
-        @method
-        @returns true if all validation rules passed successfully.Note that if a HTML form element is set as validation container, the form submits will be automatically prevented if validation fails.
-        */
-        validate(): boolean;
-        /**
-        Validates the input element against the declared validation rules.
-        @method
-        @param input - Input element to be validated.
-        @returns true if all validation rules passed successfully.
-        */
-        validateInput(input: Element): boolean;
-        /**
-        Validates the input element against the declared validation rules.
-        @method
-        @param input - Input element to be validated.
-        @returns true if all validation rules passed successfully.
-        */
-        validateInput(input: JQuery): boolean;
-    }
-
-    interface ValidatorOptions {
-        name?: string;
-        /**
-        The template which renders the validation message.
-        @member {string}
-        */
-        errorTemplate?: string;
-        /**
-        Set of messages (either strings or functions) which will be shown when given validation rule fails.
-By setting already existing key the appropriate built-in message will be overridden.
-        @member {any}
-        */
-        messages?: any;
-        /**
-        Set of custom validation rules. Those rules will extend the built-in ones.
-        @member {any}
-        */
-        rules?: any;
-        /**
-        Determines if validation will be triggered when element loses focus. Default value is true.
-        @member {boolean}
-        */
-        validateOnBlur?: boolean;
-        /**
-        Fired when validation completes.The event handler function context (available via the this keyword) will be set to the data source instance.
-        */
-        validate?(e: ValidatorValidateEvent): void;
-    }
-    interface ValidatorEvent {
-        sender: Validator;
-        isDefaultPrevented(): boolean;
-        preventDefault: Function;
-    }
-
-    interface ValidatorValidateEvent extends ValidatorEvent {
-    }
-
-
 }
 
 interface HTMLElement {
-    kendoBindingTarget: kendo.data.Binding;
+    kendoBindingTarget: kendo.data.BindingTarget;
 }
 
 interface JQueryXHR {
@@ -3709,9 +3677,5 @@ interface JQuery {
     kendoTouch(): JQuery;
     kendoTouch(options: kendo.ui.TouchOptions): JQuery;
     data(key: "kendoTouch") : kendo.ui.Touch;
-
-    kendoValidator(): JQuery;
-    kendoValidator(options: kendo.ui.ValidatorOptions): JQuery;
-    data(key: "kendoValidator") : kendo.ui.Validator;
 
 }
