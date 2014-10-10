@@ -12,6 +12,7 @@
     <script src="cordova.js"></script>
     <script src="kendo/js/jquery.min.js"></script>
     <script src="kendo/js/kendo.mobile.min.js"></script>
+    <script src="scripts/NativePageTransitionsKendoAdapter.js"></script>
     <script src="scripts/main.js"></script>
     <script src="scripts/sql.js"></script>
     <script src="scripts/notify.js"></script>
@@ -45,8 +46,7 @@
     
     
     <!-- add/edit note -->
-    <div data-role="view" id="add" data-layout="main-layout" data-title="Add Note" 
-         data-use-native-scrolling="true" data-model="app.editNoteModel.viewModel" data-show="app.editNoteModel.viewModel.loadNote">
+    <div data-role="view" id="add" data-layout="main-layout" data-title="Add Note" data-model="app.editNoteModel.viewModel" data-show="app.editNoteModel.viewModel.loadNote">
         <div class="content">
             
             <input type="hidden" id="noteId" />
@@ -88,7 +88,8 @@
     <div data-role="layout" data-id="main-layout">
         <header data-role="header">
             <div data-role="navbar">
-                <a data-role="button" onclick="app.navigate('#add')" data-icon="add" data-align="right"></a>
+                <a data-role="button" data-click="app.showHelp" data-icon="about" data-align="left"></a>
+                <a data-role="button" href="#add" data-icon="add" data-align="right"></a>
                 <a data-role="button" data-click="sql.deleteDb" data-icon="stop" data-align="left" style="display:none"></a>
                 <span data-role="view-title"></span>
             </div>

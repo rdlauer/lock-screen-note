@@ -6,7 +6,7 @@
 	app.main = {
 		start: function() {
 			var that = this;
-            app.application = new kendo.mobile.Application(document.body, { transition: "slide" });
+            app.application = new kendo.mobile.Application(document.body); //transition: "slide"
             sql.openDb();
             sql.loadAllNotes();
 		}
@@ -44,7 +44,7 @@
                 }
             }
             
-            app.application.navigate("#home");
+            app.nav("#home");
             app.resetForm();
         },
         
@@ -55,7 +55,7 @@
     	},
         
         cancelNote: function() {
-            app.application.navigate("#home");
+            app.nav("#home");
             app.resetForm();
         },
         
@@ -64,7 +64,7 @@
             // delete
             sql.deleteNote($("#noteId").val());
 
-            app.application.navigate("#home");
+            app.nav("#home");
             app.resetForm();
         },
         
@@ -121,7 +121,7 @@
         localStorage.setItem("note_firstrun", "y");
     }
     
-    app.navigate = function(href) {
+    app.nav = function(href) {
         if (window.plugins && window.plugins.nativepagetransitions) {
             window.plugins.nativepagetransitions.flip({
                 "href" : href
@@ -131,13 +131,17 @@
         }
     }
     
+    app.showHelp = function() {
+        $("#modalview-first-use").kendoMobileModalView("open");
+    }
+    
 	function onDeviceReady() {
 		navigator.splashscreen.hide();
         StatusBar.overlaysWebView(false);
 		app.main.start();
         
         if (localStorage["note_firstrun"] == null) {
-            $("#modalview-first-use").kendoMobileModalView("open");
+            app.showHelp();
         }
         
         
