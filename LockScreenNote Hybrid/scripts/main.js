@@ -6,7 +6,7 @@
 	app.main = {
 		start: function() {
 			var that = this;
-            app.application = new kendo.mobile.Application(document.body); //transition: "slide"
+            app.application = new kendo.mobile.Application(document.body, {transition: 'slide'});
             sql.openDb();
             sql.loadAllNotes();
 		}
@@ -123,7 +123,7 @@
     
     app.nav = function(href) {
         if (window.plugins && window.plugins.nativepagetransitions) {
-            window.plugins.nativepagetransitions.flip({
+            window.plugins.nativepagetransitions.slide({
                 "href" : href
             });
         } else {
@@ -144,6 +144,11 @@
             app.showHelp();
         }
         
+        if (window.plugin && window.plugin.nativepagetransitions) {
+              window.plugins.nativepagetransitions.globalOptions.duration = 7000;
+              window.plugins.nativepagetransitions.globalOptions.iosdelay = 7000;
+              window.plugins.nativepagetransitions.globalOptions.slowdownfactor = 8;
+        }
         
         if (window.plugin && window.plugin.notification) {
 

@@ -58,7 +58,12 @@
             //$("#noteTitle").val(rs.rows.item(0).note_title);
             $("#noteText").val(rs.rows.item(0).note_text);
             var activeYN = $("#noteActive").data("kendoMobileSwitch");
-            activeYN.check(rs.rows.item(0).active_yn);
+            if (rs.rows.item(0).active_yn == 0) {
+                activeYN.check(false);
+            } else {
+                activeYN.check(true);
+                $("#noteDelayPanel").show();
+            }
             $("#noteDelay").val(rs.rows.item(0).active_seconds);
             $(".deleteButtonHollow").show();
         }
